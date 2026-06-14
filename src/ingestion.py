@@ -21,7 +21,7 @@ def process_pdf(pdf_path):
     print(f"Processing: {pdf_path}")
     text = extract_text(pdf_path)
     chunks = chunk_text(text)
-    print(f"Extracted {len(chunks)} chunks")
+    
     return chunks
 
 if __name__ == "__main__":
