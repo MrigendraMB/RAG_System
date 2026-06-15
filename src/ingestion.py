@@ -23,7 +23,3 @@ def process_pdf(pdf_path):
     chunks = chunk_text(text)
     
     return chunks
-
-if __name__ == "__main__":
-    chunks = process_pdf("../data/test.pdf")
-    print(f"First chunk preview: {chunks[0][:200]}")
