@@ -25,11 +25,16 @@ async def upload_pdf(file: UploadFile = File(...)):
 async def ask_question(question: str):
     query_embedding = embedding([question])[0]
     results = search(query_embedding, n_results=5)
+    documents = results["documents"][0]
+    metadatas = results["metadatas"][0]
     if not results["documents"][0]:
         return {"answer": "No documents uploaded yet. Please upload a PDF first."}
-    context_chunks = results["documents"][0]
+    context_chunks = [
+    f"[Source: {meta['source']}]\n{doc}" 
+    for doc, meta in zip(documents, metadatas)
+    ]
     answer = generate_answer(question, context_chunks)
-    return {"answer": answer}
+    return {"answer": answer, "citations": metadatas}
 
 if __name__ == "__main__":
     import uvicorn

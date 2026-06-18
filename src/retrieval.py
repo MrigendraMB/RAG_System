@@ -1,10 +1,11 @@
 import chromadb
-
+import os
 client = chromadb.PersistentClient(path="./chroma_db")
 collection = client.get_or_create_collection("documents")
 
 def store_chunks(chunks, embeddings, source_file):
-    ids = [f"chunk_{i}" for i in range(len(chunks))]
+    filename = os.path.basename(source_file)
+    ids = [f"{filename}_chunk_{i}" for i in range(len(chunks))]
     metadatas = [{"source": source_file} for _ in chunks]
     
     collection.add(
@@ -13,6 +14,7 @@ def store_chunks(chunks, embeddings, source_file):
         metadatas=metadatas,
         ids=ids
     )
+    return metadatas
     
 
 def search(query_embedding, n_results=5):

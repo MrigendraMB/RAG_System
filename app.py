@@ -646,19 +646,16 @@ def page_ask_question():
                     
                     # Display sources if available
                     if msg.get("sources"):
-                        for source in msg["sources"]:
+                        unique_sources = list(set(s.get('source', 'Unknown') for s in msg["sources"]))
+                        for source in unique_sources:
                             st.markdown(
                                 f"""
                                 <div class="source-citation">
-                                    <div class="source-title">📖 {source.get('law_name', 'Source')}</div>
-                                    <div class="source-details">
-                                        <strong>Section:</strong> {source.get('section', 'N/A')}<br>
-                                        <strong>Confidence:</strong> {source.get('confidence', 'N/A')}
-                                    </div>
+                                   <div class="source-title">📖 Source: {source}</div>
                                 </div>
                                 """,
                                 unsafe_allow_html=True
-                            )
+                       )
 
     st.divider()
 
@@ -692,7 +689,7 @@ def page_ask_question():
             st.session_state.chat_history.append({
                 "role": "assistant",
                 "content": response.get("answer", "No answer available"),
-                "sources": response.get("sources", []),
+                "sources": response.get("citations", []),
                 "time": datetime.now().strftime("%H:%M")
             })
         else:
@@ -728,7 +725,7 @@ def page_ask_question():
                 })
                 
                 with st.spinner("Finding answer..."):
-                    response = api.query(example)
+                    response = api.ask(example)
                 
                 if not response.get("error"):
                     st.session_state.chat_history.append({
