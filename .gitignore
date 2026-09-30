@@ -1,2 +1,23 @@
+# Environment variables
 .env
-test.py
+*.env
+Backend/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# Vector database
+chroma_db/
+Backend/chroma_db/
+
+# Node / Frontend
+node_modules/
+.next/
+dist/
+build/
+.DS_Store
+*.log

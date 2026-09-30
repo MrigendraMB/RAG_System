@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kanoon Saathi - Nepal Labour Law AI Assistant</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Mukta:wght@500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "error-container": "#ffdad6",
+          "on-error": "#ffffff",
+          "on-primary-fixed-variant": "#364764",
+          "on-secondary-fixed": "#410003",
+          "inverse-surface": "#2e3132",
+          "outline": "#75777e",
+          "tertiary-container": "#cea72c",
+          "surface": "#f8f9fb",
+          "inverse-on-surface": "#f0f1f3",
+          "secondary-fixed": "#ffdad6",
+          "on-primary-container": "#7587a7",
+          "secondary-fixed-dim": "#ffb4ac",
+          "on-secondary-fixed-variant": "#93000e",
+          "on-primary-fixed": "#071c36",
+          "primary-container": "#0b1f3a",
+          "on-secondary": "#ffffff",
+          "on-tertiary-fixed": "#241a00",
+          "surface-dim": "#d9dadc",
+          "on-tertiary": "#ffffff",
+          "surface-container-lowest": "#ffffff",
+          "on-surface-variant": "#44474d",
+          "secondary": "#b51a1e",
+          "secondary-container": "#d93633",
+          "tertiary": "#755b00",
+          "surface-container": "#edeef0",
+          "surface-container-low": "#f2f4f6",
+          "surface-bright": "#f8f9fb",
+          "on-background": "#191c1e",
+          "tertiary-fixed-dim": "#ecc246",
+          "tertiary-fixed": "#ffe08e",
+          "surface-variant": "#e1e2e4",
+          "on-secondary-container": "#fffbff",
+          "on-primary": "#ffffff",
+          "background": "#f8f9fb",
+          "on-error-container": "#93000a",
+          "surface-tint": "#4d5f7d",
+          "surface-container-high": "#e7e8ea",
+          "outline-variant": "#c4c6ce",
+          "error": "#ba1a1a",
+          "on-surface": "#191c1e",
+          "surface-container-highest": "#e1e2e4",
+          "on-tertiary-container": "#503d00",
+          "inverse-primary": "#b5c7ea",
+          "primary-fixed-dim": "#b5c7ea",
+          "primary": "#000615",
+          "primary-fixed": "#d6e3ff",
+          "on-tertiary-fixed-variant": "#584400"
+        },
+        borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+        spacing: { "xs": "4px", "margin-mobile": "16px", "sm": "12px", "base": "8px", "lg": "48px", "gutter": "24px", "xl": "80px", "md": "24px", "margin-desktop": "64px" },
+        fontFamily: {
+          "headline-lg": ["Manrope"], "label-sm": ["Inter"], "display-lg": ["Manrope"],
+          "headline-md": ["Manrope"], "label-md": ["Inter"], "body-lg": ["Inter"],
+          "body-md": ["Inter"], "headline-lg-mobile": ["Manrope"]
+        },
+        fontSize: {
+          "headline-lg": ["32px", { lineHeight: "1.3", fontWeight: "600" }],
+          "label-sm": ["12px", { lineHeight: "1.2", fontWeight: "600" }],
+          "display-lg": ["48px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "700" }],
+          "headline-md": ["24px", { lineHeight: "1.4", fontWeight: "600" }],
+          "label-md": ["14px", { lineHeight: "1.4", letterSpacing: "0.01em", fontWeight: "500" }],
+          "body-lg": ["18px", { lineHeight: "1.6", fontWeight: "400" }],
+          "body-md": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+          "headline-lg-mobile": ["24px", { lineHeight: "1.3", fontWeight: "600" }]
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  h1,h2,h3,h4,h5,h6,.font-headline-lg,.font-headline-md,.font-display-lg { font-family: 'Manrope', sans-serif; }
+  .font-nepali { font-family: 'Mukta', sans-serif !important; }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    display: inline-block; vertical-align: middle; line-height: 1;
+  }
+  .legal-grid-bg {
+    background-color: #f8f9fb;
+    background-image: radial-gradient(#c4c6ce 0.75px, transparent 0.75px);
+    background-size: 24px 24px;
+  }
+  .card-shadow { box-shadow: 0 4px 20px rgba(11, 31, 58, 0.08); }
+  .hidden-view { display: none !important; }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .animate-fade-in-up { animation: fadeInUp 0.35s ease-out both; }
+  .spin { animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .citation-chip {
+    position: relative;
+    display: inline-block;
+  }
+  .citation-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
+  }
+  .citation-chip:hover .citation-tooltip {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+<!-- ============ TOP NAV ============ -->
+<header class="bg-surface border-b border-outline-variant shadow-sm sticky top-0 z-50">
+  <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-[1200px] mx-auto">
+    <a class="flex items-center gap-3 group cursor-pointer" data-nav="chat">
+      <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-lowest border border-outline-variant group-hover:border-secondary transition-colors p-1 shadow-sm">
+        <svg class="w-8 h-8 text-primary group-hover:scale-105 transition-transform" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" viewBox="0 0 100 100">
+          <polygon fill="#000615" points="50,14 55,22 50,30 45,22" stroke="none"></polygon>
+          <path d="M42 27 L37 29" stroke="#b51a1e" stroke-width="4.5"></path>
+          <path d="M44 33 L39 37" stroke="#b51a1e" stroke-width="4.5"></path>
+          <path d="M58 27 L63 29" stroke="#b51a1e" stroke-width="4.5"></path>
+          <path d="M56 33 L61 37" stroke="#b51a1e" stroke-width="4.5"></path>
+          <path d="M50 30 L50 82 M38 82 L62 82 M34 87 L66 87" stroke="#000615"></path>
+          <path d="M50 38 L32 38 L18 64 L46 64 Z" stroke="#000615"></path>
+          <path d="M18 64 Q32 74 46 64" stroke="#000615"></path>
+          <path d="M50 38 L68 38 L54 64 L82 64 Z" stroke="#000615"></path>
+          <path d="M54 64 Q68 74 82 64" stroke="#000615"></path>
+        </svg>
+      </div>
+      <div class="flex flex-col">
+        <div class="flex items-center gap-1.5">
+          <span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Kanoon Saathi</span>
+          <span class="font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed px-1.5 py-0.5 rounded">AI 2.0</span>
+        </div>
+        <span class="font-nepali text-secondary font-bold text-sm tracking-wide -mt-1">कानून साथी</span>
+      </div>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8">
+      <a class="nav-link text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md py-1 cursor-pointer" data-nav="chat">Home</a>
+      <a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md py-1 cursor-pointer">About</a>
+      <a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md py-1 cursor-pointer">Legal Sources</a>
+      <a class="nav-link text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md py-1 flex items-center gap-1 cursor-pointer" data-nav="admin">
+        Admin Panel
+        <span class="material-symbols-outlined text-base">open_in_new</span>
+      </a>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <button class="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-outline-variant bg-surface-container-lowest font-label-md text-label-md text-on-surface hover:border-primary transition-colors shadow-sm" type="button">
+        <span class="material-symbols-outlined text-lg">language</span>
+        <span>English (नेपाली)</span>
+      </button>
+      <button aria-label="Account Profile" class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-high transition-colors text-primary border border-outline-variant" type="button">
+        <span class="material-symbols-outlined text-2xl">account_circle</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ CHAT VIEW ============ -->
+<div id="view-chat" class="flex-1 flex flex-col">
+  <main class="flex-1 w-full legal-grid-bg py-8 md:py-12 px-4 sm:px-6">
+    <div class="max-w-[880px] mx-auto pb-40">
+
+      <!-- Landing / empty state -->
+      <div id="chat-landing" class="flex flex-col items-center justify-center pt-8">
+        <div class="text-center max-w-3xl mx-auto mb-lg flex flex-col items-center gap-md">
+          <h1 class="font-display-lg text-display-lg text-primary font-nepali">कानून साथी</h1>
+          <h2 class="font-headline-lg text-headline-lg text-on-surface-variant">Your AI Guide to Nepal Labour Law</h2>
+          <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mt-sm">
+            Ask questions about Nepal's labour laws and get clear answers supported by relevant legal sources. Experience modern legal intelligence.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter w-full max-w-4xl">
+          <!-- suggestion cards injected below -->
+          <button class="suggest-card bg-surface-container-lowest border border-outline-variant rounded-xl p-md text-left hover:shadow-[0_4px_20px_rgba(11,31,58,0.08)] hover:-translate-y-1 transition-all duration-300 group flex flex-col gap-sm relative overflow-hidden" data-q="What is the maximum working hour per day in Nepal?">
+            <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div class="flex items-center gap-base text-primary"><span class="material-symbols-outlined text-secondary">schedule</span><span class="font-label-md text-label-md font-semibold">Working Hours</span></div>
+            <p class="font-body-md text-body-md text-on-surface">"What is the maximum working hour per day in Nepal?"</p>
+          </button>
+          <button class="suggest-card bg-surface-container-lowest border border-outline-variant rounded-xl p-md text-left hover:shadow-[0_4px_20px_rgba(11,31,58,0.08)] hover:-translate-y-1 transition-all duration-300 group flex flex-col gap-sm relative overflow-hidden" data-q="What are the rules regarding paid leave?">
+            <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div class="flex items-center gap-base text-primary"><span class="material-symbols-outlined text-secondary">event_available</span><span class="font-label-md text-label-md font-semibold">Leave Policies</span></div>
+            <p class="font-body-md text-body-md text-on-surface">"What are the rules regarding paid leave?"</p>
+          </button>
+          <button class="suggest-card bg-surface-container-lowest border border-outline-variant rounded-xl p-md text-left hover:shadow-[0_4px_20px_rgba(11,31,58,0.08)] hover:-translate-y-1 transition-all duration-300 group flex flex-col gap-sm relative overflow-hidden" data-q="What is the minimum wage in Nepal?">
+            <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div class="flex items-center gap-base text-primary"><span class="material-symbols-outlined text-secondary">payments</span><span class="font-label-md text-label-md font-semibold">Compensation</span></div>
+            <p class="font-body-md text-body-md text-on-surface">"What is the minimum wage in Nepal?"</p>
+          </button>
+          <button class="suggest-card bg-surface-container-lowest border border-outline-variant rounded-xl p-md text-left hover:shadow-[0_4px_20px_rgba(11,31,58,0.08)] hover:-translate-y-1 transition-all duration-300 group flex flex-col gap-sm relative overflow-hidden" data-q="Can an employer terminate an employee without notice?">
+            <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div class="flex items-center gap-base text-primary"><span class="material-symbols-outlined text-secondary">gavel</span><span class="font-label-md text-label-md font-semibold">Termination</span></div>
+            <p class="font-body-md text-body-md text-on-surface">"Can an employer terminate an employee without notice?"</p>
+          </button>
+        </div>
+      </div>
+
+      <!-- Conversation thread -->
+      <div id="chat-thread" class="space-y-8 hidden-view"></div>
+    </div>
+  </main>
+
+  <!-- Sticky input dock -->
+  <footer class="fixed bottom-0 left-0 right-0 bg-surface/90 backdrop-blur-md border-t border-outline-variant py-4 z-40">
+    <div class="max-w-[880px] mx-auto px-4 sm:px-6">
+      <form id="chat-form" class="relative flex items-center bg-surface-container-lowest rounded-xl border border-outline-variant focus-within:border-primary focus-within:ring-2 focus-within:ring-tertiary-fixed transition-all shadow-md p-1.5">
+        <button type="button" class="p-2.5 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors flex items-center justify-center" title="Attach Document">
+          <span class="material-symbols-outlined text-2xl">attach_file</span>
+        </button>
+        <input id="chat-input" class="w-full bg-transparent border-none text-on-surface placeholder:text-outline focus:ring-0 font-body-md text-body-md py-2 px-2" placeholder="Ask a legal question about Nepal Labour Law (e.g., gratuity rules, probation duration)..." type="text" autocomplete="off" />
+        <div class="flex items-center gap-1.5 pr-1">
+          <button type="button" class="p-2 text-on-surface-variant hover:text-primary rounded-lg transition-colors" title="Voice Search">
+            <span class="material-symbols-outlined text-xl">mic</span>
+          </button>
+          <button id="chat-send" type="submit" aria-label="Send Inquiry" class="bg-primary hover:bg-primary-container text-white px-4 py-2 rounded-lg font-label-md text-label-md font-semibold transition-all flex items-center gap-1.5 shadow-sm active:scale-95 disabled:opacity-60">
+            <span id="chat-send-label">Send</span>
+            <span class="material-symbols-outlined text-lg">arrow_upward</span>
+          </button>
+        </div>
+      </form>
+      <div class="flex items-center justify-center gap-2 mt-2.5 text-center">
+        <span class="material-symbols-outlined text-xs text-outline">verified_user</span>
+        <p class="font-label-sm text-label-sm text-outline">
+          Kanoon Saathi is an AI legal assistant for informational purposes. For official legal counsel, consult a licensed advocate registered with the Nepal Bar Council.
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ============ ADMIN VIEW ============ -->
+<div id="view-admin" class="flex-1 hidden-view">
+
+  <!-- Password gate -->
+  <div id="admin-gate" class="min-h-[calc(100vh-73px)] flex items-center justify-center px-4 legal-grid-bg">
+    <div class="w-full max-w-md bg-surface-container-lowest border border-outline-variant rounded-xl p-8 shadow-sm card-shadow">
+      <div class="flex flex-col items-center text-center mb-6">
+        <div class="w-14 h-14 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-3xl">lock</span>
+        </div>
+        <h2 class="font-headline-md text-headline-md font-bold text-primary">Admin Access</h2>
+        <p class="font-body-md text-body-md text-on-surface-variant mt-1">Enter the admin password to manage legal documents.</p>
+      </div>
+      <form id="admin-login-form" class="flex flex-col gap-4">
+        <div>
+          <label class="font-label-md text-label-md font-semibold text-on-surface block mb-1.5" for="admin-pass">Password</label>
+          <input id="admin-pass" type="password" class="w-full rounded-lg border border-outline-variant bg-surface px-4 py-3 focus:border-primary focus:ring-2 focus:ring-tertiary-fixed transition-all" placeholder="••••••••" />
+          <p id="admin-error" class="text-error font-label-sm text-label-sm mt-2 hidden-view">Incorrect password. Please try again.</p>
+        </div>
+        <button type="submit" class="w-full bg-primary text-on-primary py-3 rounded-lg font-label-md text-label-md font-semibold hover:bg-primary-container transition-colors flex items-center justify-center gap-2 shadow-md">
+          <span class="material-symbols-outlined text-lg">login</span> Unlock Admin Panel
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin dashboard (revealed after login) -->
+  <div id="admin-dash" class="hidden-view flex min-h-[calc(100vh-73px)]">
+    <!-- Sidebar -->
+    <aside class="bg-surface-container-low w-64 border-r border-outline-variant flex-col p-md gap-base hidden md:flex">
+      <div class="mb-lg px-2">
+        <h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Admin Portal</h1>
+        <p class="font-label-md text-label-md text-on-surface-variant mt-1">Legal Intelligence</p>
+      </div>
+      <nav class="flex-1 flex flex-col gap-2">
+        <a class="admin-tab flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md cursor-pointer transition-all" data-tab="dashboard"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
+        <a class="admin-tab flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md cursor-pointer transition-all" data-tab="upload"><span class="material-symbols-outlined">upload_file</span><span>Upload</span></a>
+        <a class="admin-tab flex items-center gap-3 px-4 py-3 rounded-lg font-label-md text-label-md cursor-pointer transition-all" data-tab="documents"><span class="material-symbols-outlined">description</span><span>Documents</span></a>
+      </nav>
+      <div class="mt-auto pt-6">
+        <button id="admin-upload-cta" class="w-full bg-primary text-on-primary py-3 rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-md">
+          <span class="material-symbols-outlined text-sm">add</span> New Document
+        </button>
+      </div>
+      <div class="mt-6 flex items-center gap-3 px-2 pt-4 border-t border-outline-variant">
+        <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined">account_circle</span>
+        </div>
+        <div class="flex flex-col overflow-hidden">
+          <span class="font-label-md text-label-md text-on-surface truncate font-semibold">System Admin</span>
+          <span class="font-label-sm text-label-sm text-on-surface-variant truncate">admin@kanoonsaathi.np</span>
+        </div>
+      </div>
+      <button id="admin-logout" class="mt-2 text-error font-label-sm text-label-sm hover:underline text-left px-2 flex items-center gap-1">
+        <span class="material-symbols-outlined text-sm">logout</span> Sign out
+      </button>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 overflow-y-auto bg-background">
+      <div class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-lg">
+
+        <!-- Dashboard tab -->
+        <section id="tab-dashboard" class="admin-panel">
+          <header class="mb-xl">
+            <h2 class="font-display-lg text-display-lg text-on-background mb-2">Admin Dashboard</h2>
+            <p class="font-body-lg text-body-lg text-on-surface-variant">Manage legal documents used by Kanoon Saathi.</p>
+          </header>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-xl">
+            <div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant card-shadow relative overflow-hidden group">
+              <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><span class="material-symbols-outlined text-6xl text-primary">description</span></div>
+              <p class="font-label-md text-label-md text-on-surface-variant mb-4 uppercase tracking-wider">Total Documents</p>
+              <div class="flex items-baseline gap-2"><span id="stat-total" class="font-display-lg text-display-lg text-primary">0</span></div>
+            </div>
+            <div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant card-shadow relative overflow-hidden group">
+              <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><span class="material-symbols-outlined text-6xl text-tertiary-container">database</span></div>
+              <p class="font-label-md text-label-md text-on-surface-variant mb-4 uppercase tracking-wider">Knowledge Base</p>
+              <div class="flex items-baseline gap-2"><span id="stat-chunks" class="font-display-lg text-display-lg text-primary">0</span><span class="font-body-md text-body-md text-on-surface-variant">chunks</span></div>
+            </div>
+            <div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant card-shadow relative overflow-hidden flex flex-col justify-between">
+              <p class="font-label-md text-label-md text-on-surface-variant mb-4 uppercase tracking-wider">System Status</p>
+              <div class="flex items-center gap-3"><div class="w-4 h-4 rounded-full bg-[#10B981] animate-pulse"></div><span class="font-headline-md text-headline-md text-on-background">Online</span></div>
+            </div>
+          </div>
+          <section class="bg-surface-container-lowest rounded-xl border border-outline-variant card-shadow overflow-hidden">
+            <div class="px-md py-6 border-b border-outline-variant flex justify-between items-center bg-surface">
+              <h3 class="font-headline-md text-headline-md text-on-background">Recent Uploads</h3>
+              <button class="admin-tab font-label-md text-label-md text-primary hover:text-secondary transition-colors flex items-center gap-1" data-tab="documents">View All <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-outline-variant bg-surface-container-low/50">
+                    <th class="py-4 px-md font-label-md text-label-md text-on-surface-variant font-semibold">Document Name</th>
+                    <th class="py-4 px-md font-label-md text-label-md text-on-surface-variant font-semibold">Category</th>
+                    <th class="py-4 px-md font-label-md text-label-md text-on-surface-variant font-semibold">Status</th>
+                    <th class="py-4 px-md font-label-md text-label-md text-on-surface-variant font-semibold text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="docs-table-body" class="divide-y divide-outline-variant"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <!-- Upload tab -->
+        <section id="tab-upload" class="admin-panel hidden-view">
+          <header class="mb-lg">
+            <h1 class="font-headline-lg text-headline-lg text-on-surface">Upload Legal Document</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant mt-xs">Add new acts, regulations, or case files to the intelligence database.</p>
+          </header>
+          <div class="max-w-3xl">
+            <div id="dropzone" class="bg-surface-container-lowest border-2 border-dashed border-outline-variant rounded-xl p-xl flex flex-col items-center justify-center text-center cursor-pointer hover:border-primary transition-colors duration-200 group mb-lg shadow-sm">
+              <div class="w-20 h-20 rounded-full bg-surface-container-low text-primary-container flex items-center justify-center mb-md group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">
+                <span class="material-symbols-outlined text-[40px]">upload_file</span>
+              </div>
+              <h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Drag and drop PDF here or Browse Files</h3>
+              <p class="font-body-md text-body-md text-on-surface-variant max-w-md">Supported formats: PDF, DOCX (Max size: 50MB). Documents will be automatically indexed for AI search.</p>
+              <input id="file-input" type="file" class="hidden" accept=".pdf,.docx,.doc" />
+            </div>
+            <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-md shadow-sm">
+              <h4 class="font-label-md text-label-md font-semibold text-on-surface mb-md">Current Uploads</h4>
+              <div id="upload-list" class="flex flex-col gap-md">
+                <p id="upload-empty" class="font-body-md text-body-md text-on-surface-variant">No uploads yet. Add a document to begin indexing.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Documents tab -->
+        <section id="tab-documents" class="admin-panel hidden-view">
+          <header class="mb-lg">
+            <h1 class="font-headline-lg text-headline-lg text-on-surface">Documents</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant mt-xs">All legal documents indexed in the knowledge base.</p>
+          </header>
+          <div class="bg-surface-container-lowest rounded-xl border border-outline-variant card-shadow overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-outline-variant bg-surface-container-low/50">
+                    <th class="py-4 px-md font-label-md text-label-md text-on-surface-variant font-semibold">Document Name</th>
+                    <th class="py-4 px-md font-label-md text-label-md text-on-surface-variant font-semibold">Category</th>
+                    <th class="py-4 px-md font-label-md text-label-md text-on-surface-variant font-semibold">Status</th>
+                    <th class="py-4 px-md font-label-md text-label-md text-on-surface-variant font-semibold text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="docs-table-body-all" class="divide-y divide-outline-variant"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-[60] hidden-view">
+  <div class="bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 font-label-md text-label-md">
+    <span id="toast-icon" class="material-symbols-outlined text-base">check_circle</span>
+    <span id="toast-msg"></span>
+  </div>
+</div>
+
+<script>
+  const API_BASE = "http://localhost:8000";
+  const ADMIN_PASSWORD = "admin123";
+
+  // ---------- helpers ----------
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  function toast(msg, ok = true) {
+    const t = $("#toast");
+    $("#toast-msg").textContent = msg;
+    const icon = $("#toast-icon");
+    icon.textContent = ok ? "check_circle" : "error";
+    icon.style.color = ok ? "#10B981" : "#ffb4ac";
+    t.classList.remove("hidden-view");
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.add("hidden-view"), 3200);
+  }
+
+  // ---------- view routing ----------
+  function showView(view) {
+    $("#view-chat").classList.toggle("hidden-view", view !== "chat");
+    $("#view-admin").classList.toggle("hidden-view", view !== "admin");
+    if (view === "admin" && isAdminAuthed()) refreshDocs();
+    window.scrollTo(0, 0);
+  }
+
+  $$("[data-nav]").forEach((el) => el.addEventListener("click", (e) => {
+    e.preventDefault();
+    showView(el.getAttribute("data-nav"));
+  }));
+
+  // ---------- CHAT ----------
+  const thread = $("#chat-thread");
+  const landing = $("#chat-landing");
+  let msgCount = 0;
+
+  function nowTime() {
+    return new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  }
+
+  // Very light markdown: bullet lists (- / *) and **bold**
+  function renderAnswer(text) {
+    const safe = esc(text).replace(/\*\*(.+?)\*\*/g, '<strong class="text-primary font-semibold">$1</strong>');
+    const lines = safe.split(/\r?\n/);
+    let html = "";
+    let inList = false;
+    const closeList = () => { if (inList) { html += "</ul>"; inList = false; } };
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (!line) { closeList(); continue; }
+      if (/^[-*]\s+/.test(line)) {
+        if (!inList) { html += '<ul class="list-disc pl-5 space-y-1.5 my-2">'; inList = true; }
+        html += "<li>" + line.replace(/^[-*]\s+/, "") + "</li>";
+      } else {
+        closeList();
+        html += '<p class="mb-2 leading-relaxed">' + line + "</p>";
+      }
+    }
+    closeList();
+    return html;
+  }
+
+  function citationCard(src, i) {
+    const rawPath = typeof src === "string" ? src : (src && src.source ? src.source : "Legal Document");
+    const filename = rawPath.split(/[/\\]/).pop() || "Legal Document";
+    return `
+      <div class="citation-chip relative inline-block">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container hover:bg-surface-container-high border border-outline-variant text-xs font-semibold text-primary transition-all cursor-pointer hover:border-secondary shadow-xs">
+          <span class="material-symbols-outlined text-xs text-secondary">picture_as_pdf</span>
+          <span>Source ${i + 1}</span>
+          <span class="text-[11px] text-on-surface-variant font-normal max-w-[130px] truncate">(${esc(filename)})</span>
+        </span>
+        
+        <!-- Hover Popover Tooltip with full detail -->
+        <div class="citation-tooltip absolute bottom-full left-0 mb-2 w-72 p-4 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-xl z-50 pointer-events-none">
+          <div class="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-surface-container">
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container font-label-sm text-xs font-semibold text-primary">
+              <span class="material-symbols-outlined text-xs text-secondary">picture_as_pdf</span> Source ${i + 1}
+            </span>
+            <span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed">
+              <span class="material-symbols-outlined text-xs">check_circle</span> Verified
+            </span>
+          </div>
+          <div class="text-xs font-bold text-primary break-all mb-2">${esc(rawPath)}</div>
+          <div class="pt-2 border-t border-surface-container flex items-center justify-between text-[11px]">
+            <span class="text-outline">Cited Legal Source</span>
+            <span class="inline-flex items-center gap-1 font-semibold text-secondary">View Details <span class="material-symbols-outlined text-xs">open_in_new</span></span>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function appendUserMessage(q) {
+    const el = document.createElement("div");
+    el.className = "flex justify-end items-start gap-3 pl-8 md:pl-24 animate-fade-in-up";
+    el.innerHTML = `
+      <div class="flex flex-col items-end max-w-2xl">
+        <div class="bg-primary-container text-on-primary p-5 rounded-2xl rounded-tr-sm shadow-md border border-primary">
+          <p class="font-medium text-white leading-relaxed">${esc(q)}</p>
+        </div>
+        <div class="flex items-center gap-2 mt-1.5 mr-1 font-label-sm text-label-sm text-on-surface-variant">
+          <span>Advocate Query</span><span>•</span><span>Today, ${nowTime()}</span>
+        </div>
+      </div>
+      <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white shrink-0 shadow-sm border border-outline-variant">
+        <span class="material-symbols-outlined text-lg">person</span>
+      </div>`;
+    thread.appendChild(el);
+  }
+
+  function appendLoadingMessage() {
+    const el = document.createElement("div");
+    el.className = "flex items-start gap-3.5 pr-0 md:pr-12 animate-fade-in-up";
+    el.innerHTML = `
+      <div class="w-10 h-10 rounded-xl bg-surface-container-lowest border border-outline-variant flex items-center justify-center text-primary shadow-sm shrink-0 mt-1">
+        <span class="material-symbols-outlined text-xl text-primary">balance</span>
+      </div>
+      <div class="flex-1 bg-surface-container-lowest rounded-2xl border border-outline-variant p-6 shadow-sm">
+        <div class="flex items-center gap-3 text-on-surface-variant">
+          <span class="material-symbols-outlined spin text-primary">progress_activity</span>
+          <span class="font-label-md text-label-md">Consulting the legal corpus…</span>
+        </div>
+      </div>`;
+    thread.appendChild(el);
+    return el;
+  }
+
+  function buildAnswerCard(answer, citations) {
+    const hasCites = Array.isArray(citations) && citations.length > 0;
+    const citeHtml = hasCites ? `
+      <div class="mt-4 pt-3 border-t border-surface-container flex flex-wrap items-center gap-2">
+        <span class="text-xs font-semibold text-on-surface-variant flex items-center gap-1 mr-1">
+          <span class="material-symbols-outlined text-sm text-secondary">verified_user</span> Legal Citations:
+        </span>
+        ${citations.map((c, i) => citationCard(c, i)).join("")}
+      </div>` : "";
+
+    return `
+      <div class="flex items-start gap-3.5 pr-0 md:pr-12">
+        <div class="w-10 h-10 rounded-xl bg-surface-container-lowest border border-outline-variant flex items-center justify-center text-primary shadow-sm shrink-0 mt-1">
+          <span class="material-symbols-outlined text-xl text-primary">balance</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant p-6 md:p-8 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-surface-container">
+              <div class="flex items-center gap-2">
+                <span class="text-on-surface-variant font-label-sm text-label-sm font-medium flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base text-secondary">verified</span> Verified Legal Corpus
+                </span>
+              </div>
+              <div class="flex items-center gap-1">
+                <button class="copy-btn p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-lg transition-colors" title="Copy Response">
+                  <span class="material-symbols-outlined text-lg">content_copy</span>
+                </button>
+              </div>
+            </div>
+            <div class="py-5 font-body-lg text-body-lg text-on-surface">${renderAnswer(answer)}</div>
+            ${citeHtml}
+            <div class="p-4 rounded-lg bg-surface border border-outline-variant border-l-4 border-l-secondary mt-4">
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-secondary text-xl shrink-0 mt-0.5">info</span>
+                <p class="font-body-md text-body-md text-on-surface-variant leading-normal">
+                  <strong class="font-semibold text-primary">Note:</strong> This response is generated from indexed legal documents. Always confirm with the primary source or a qualified legal professional.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  async function askQuestion(q) {
+    q = (q || "").trim();
+    if (!q) return;
+
+    // Move from landing to thread
+    landing.classList.add("hidden-view");
+    thread.classList.remove("hidden-view");
+    if (msgCount === 0) {
+      thread.insertAdjacentHTML("afterbegin", `
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-outline-variant">
+          <div class="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant">
+            <span>Legal Inquiry</span>
+            <span class="material-symbols-outlined text-sm">chevron_right</span>
+            <span class="text-primary font-semibold">Nepal Labour Law</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Live Legal Database</span>
+          </div>
+        </div>`);
+    }
+    msgCount++;
+
+    appendUserMessage(q);
+    const loader = appendLoadingMessage();
+    setSending(true);
+    loader.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    try {
+      const res = await fetch(`${API_BASE}/ask?question=${encodeURIComponent(q)}`, { method: "POST" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      loader.outerHTML = buildAnswerCard(data.answer || "No answer returned.", data.citations || []);
+    } catch (err) {
+      loader.outerHTML = `
+        <div class="flex items-start gap-3.5 pr-0 md:pr-12">
+          <div class="w-10 h-10 rounded-xl bg-error-container border border-outline-variant flex items-center justify-center text-error shadow-sm shrink-0 mt-1">
+            <span class="material-symbols-outlined text-xl">error</span>
+          </div>
+          <div class="flex-1 bg-surface-container-lowest rounded-2xl border border-l-4 border-l-error border-outline-variant p-6 shadow-sm">
+            <h4 class="font-label-md text-label-md font-bold text-error mb-1">Could not reach the legal assistant</h4>
+            <p class="font-body-md text-body-md text-on-surface-variant">Please make sure the backend is running at <code class="text-primary">${API_BASE}</code>.</p>
+            <p class="font-label-sm text-label-sm text-outline mt-2">${esc(err.message)}</p>
+          </div>
+        </div>`;
+    } finally {
+      setSending(false);
+      const last = thread.lastElementChild;
+      if (last) last.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  function setSending(on) {
+    $("#chat-send").disabled = on;
+    $("#chat-send-label").textContent = on ? "Sending…" : "Send";
+  }
+
+  $("#chat-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (e.nativeEvent && e.nativeEvent.isComposing) return;
+    const input = $("#chat-input");
+    const q = input.value;
+    input.value = "";
+    askQuestion(q);
+  });
+
+  $$(".suggest-card").forEach((c) => c.addEventListener("click", () => askQuestion(c.getAttribute("data-q"))));
+
+  // Delegated copy button
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".copy-btn");
+    if (!btn) return;
+    const card = btn.closest(".flex-1");
+    const answer = card ? card.querySelector(".py-5") : null;
+    if (answer) {
+      navigator.clipboard.writeText(answer.innerText).then(() => toast("Response copied to clipboard"));
+    }
+  });
+
+  // ---------- ADMIN ----------
+  let authed = false;
+  const isAdminAuthed = () => authed;
+
+  // In-memory document store (seed matches the reference dashboard)
+  const documents = [
+    { name: "Nepal Labour Act, 2074", category: "Employment Law", status: "Processed", uploaded: "2 hrs ago" },
+    { name: "Social Security Act, 2074", category: "Welfare Law", status: "Processed", uploaded: "1 day ago" }
+  ];
+
+  function categoryBadge(cat) {
+    return `<span class="inline-flex items-center px-2 py-1 rounded-md bg-primary-fixed-dim text-primary-container font-label-sm text-label-sm">${esc(cat)}</span>`;
+  }
+
+  function statusCell(status) {
+    if (status === "Processing") {
+      return `<div class="flex items-center gap-2"><span class="material-symbols-outlined spin text-tertiary text-sm">sync</span><span class="font-label-md text-label-md text-on-surface">Processing</span></div>`;
+    }
+    return `<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[#10B981] text-sm">check_circle</span><span class="font-label-md text-label-md text-on-surface">Processed</span></div>`;
+  }
+
+  function docRow(doc, idx) {
+    return `
+      <tr class="hover:bg-surface-container-low/30 transition-colors group">
+        <td class="py-4 px-md">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary-container">article</span>
+            <div>
+              <p class="font-body-md text-body-md text-on-background font-medium">${esc(doc.name)}</p>
+              <p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Uploaded ${esc(doc.uploaded)}</p>
+            </div>
+          </div>
+        </td>
+        <td class="py-4 px-md">${categoryBadge(doc.category)}</td>
+        <td class="py-4 px-md">${statusCell(doc.status)}</td>
+        <td class="py-4 px-md text-right">
+          <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-lg hover:bg-surface-container" title="View"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
+            <button class="doc-delete p-2 text-on-surface-variant hover:text-secondary transition-colors rounded-lg hover:bg-error-container" title="Delete" data-idx="${idx}"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+          </div>
+        </td>
+      </tr>`;
+  }
+
+  function refreshDocs() {
+    const rows = documents.map((d, i) => docRow(d, i)).join("");
+    $("#docs-table-body").innerHTML = rows || `<tr><td colspan="4" class="py-8 px-md text-center text-on-surface-variant font-body-md">No documents yet.</td></tr>`;
+    $("#docs-table-body-all").innerHTML = rows || `<tr><td colspan="4" class="py-8 px-md text-center text-on-surface-variant font-body-md">No documents yet.</td></tr>`;
+    $("#stat-total").textContent = documents.length;
+    $("#stat-chunks").textContent = (documents.length * 120 + 10).toLocaleString();
+  }
+
+  document.addEventListener("click", (e) => {
+    const del = e.target.closest(".doc-delete");
+    if (!del) return;
+    documents.splice(Number(del.getAttribute("data-idx")), 1);
+    refreshDocs();
+    toast("Document removed");
+  });
+
+  // Admin login
+  $("#admin-login-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const pass = $("#admin-pass").value;
+    if (pass === ADMIN_PASSWORD) {
+      authed = true;
+      $("#admin-error").classList.add("hidden-view");
+      $("#admin-gate").classList.add("hidden-view");
+      $("#admin-dash").classList.remove("hidden-view");
+      $("#admin-pass").value = "";
+      switchTab("dashboard");
+      refreshDocs();
+    } else {
+      $("#admin-error").classList.remove("hidden-view");
+    }
+  });
+
+  $("#admin-logout").addEventListener("click", () => {
+    authed = false;
+    $("#admin-dash").classList.add("hidden-view");
+    $("#admin-gate").classList.remove("hidden-view");
+    showView("chat");
+  });
+
+  // Admin tabs
+  function switchTab(tab) {
+    $$(".admin-panel").forEach((p) => p.classList.toggle("hidden-view", p.id !== "tab-" + tab));
+    $$(".admin-tab").forEach((t) => {
+      const active = t.getAttribute("data-tab") === tab;
+      t.classList.toggle("bg-primary-container", active);
+      t.classList.toggle("text-on-primary-container", active);
+      t.classList.toggle("font-semibold", active);
+      t.classList.toggle("text-on-surface-variant", !active);
+      t.classList.toggle("hover:bg-surface-container-high", !active);
+    });
+  }
+  $$(".admin-tab").forEach((t) => t.addEventListener("click", () => switchTab(t.getAttribute("data-tab"))));
+  $("#admin-upload-cta").addEventListener("click", () => switchTab("upload"));
+
+  // Upload handling
+  const dropzone = $("#dropzone");
+  const fileInput = $("#file-input");
+  dropzone.addEventListener("click", () => fileInput.click());
+  ["dragover", "dragenter"].forEach((ev) => dropzone.addEventListener(ev, (e) => { e.preventDefault(); dropzone.classList.add("border-primary"); }));
+  ["dragleave", "drop"].forEach((ev) => dropzone.addEventListener(ev, (e) => { e.preventDefault(); dropzone.classList.remove("border-primary"); }));
+  dropzone.addEventListener("drop", (e) => { const f = e.dataTransfer.files[0]; if (f) uploadFile(f); });
+  fileInput.addEventListener("change", () => { const f = fileInput.files[0]; if (f) uploadFile(f); fileInput.value = ""; });
+
+  function humanSize(bytes) {
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+    return (bytes / 1024 / 1024).toFixed(1) + " MB";
+  }
+
+  function uploadFile(file) {
+    $("#upload-empty")?.classList.add("hidden-view");
+    const list = $("#upload-list");
+    const item = document.createElement("div");
+    item.className = "flex items-start gap-md animate-fade-in-up";
+    item.innerHTML = `
+      <div class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center flex-shrink-0 text-secondary">
+        <span class="material-symbols-outlined">picture_as_pdf</span>
+      </div>
+      <div class="flex-1 pt-xs">
+        <div class="flex justify-between items-center mb-xs">
+          <span class="font-label-md text-label-md text-on-surface font-semibold">${esc(file.name)}</span>
+          <span class="pct font-label-sm text-label-sm text-primary-container">0%</span>
+        </div>
+        <div class="w-full bg-surface-variant rounded-full h-2 mb-xs overflow-hidden">
+          <div class="bar bg-primary-container h-2 rounded-full transition-all duration-200" style="width:0%"></div>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="stat font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px] spin">sync</span> Uploading… (${humanSize(file.size)})
+          </span>
+        </div>
+      </div>`;
+    list.prepend(item);
+
+    const bar = item.querySelector(".bar");
+    const pct = item.querySelector(".pct");
+    const stat = item.querySelector(".stat");
+
+    const fd = new FormData();
+    fd.append("file", file);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", `${API_BASE}/upload`);
+    xhr.upload.onprogress = (ev) => {
+      if (ev.lengthComputable) {
+        const p = Math.round((ev.loaded / ev.total) * 100);
+        bar.style.width = p + "%";
+        pct.textContent = p + "%";
+      }
+    };
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        bar.style.width = "100%"; pct.textContent = "100%";
+        stat.innerHTML = '<span class="material-symbols-outlined text-[14px] text-[#10B981]">check_circle</span> Uploaded &amp; indexed';
+        documents.unshift({ name: file.name, category: "Uncategorized", status: "Processed", uploaded: "just now" });
+        refreshDocs();
+        toast("Document uploaded successfully");
+      } else {
+        uploadFailed(bar, pct, stat, "Server returned " + xhr.status);
+      }
+    };
+    xhr.onerror = () => uploadFailed(bar, pct, stat, "Cannot reach " + API_BASE);
+    xhr.send(fd);
+  }
+
+  function uploadFailed(bar, pct, stat, msg) {
+    bar.style.width = "100%";
+    bar.classList.remove("bg-primary-container");
+    bar.classList.add("bg-error");
+    pct.textContent = "Failed";
+    pct.classList.add("text-error");
+    stat.innerHTML = '<span class="material-symbols-outlined text-[14px] text-error">error</span> ' + esc(msg);
+    toast("Upload failed", false);
+  }
+
+  // init
+  showView("chat");
+  refreshDocs();
+</script>
+</body>
+</html>
