@@ -11,6 +11,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Mukta:wght@500;700&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
+<!-- Markdown & Mermaid Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
@@ -123,6 +127,106 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* Markdown content & Table styling */
+  .markdown-content table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1.25rem 0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid #c4c6ce;
+    box-shadow: 0 2px 8px rgba(11, 31, 58, 0.05);
+  }
+  .markdown-content th {
+    background-color: #000615;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-bottom: 3px solid #b51a1e;
+    text-align: left;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+  }
+  .markdown-content td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e1e2e4;
+    color: #191c1e;
+    font-size: 0.95rem;
+  }
+  .markdown-content tr:last-child td {
+    border-bottom: none;
+  }
+  .markdown-content tr:nth-child(even) {
+    background-color: #f8f9fb;
+  }
+  .markdown-content tr:hover {
+    background-color: #f2f4f6;
+  }
+  .markdown-content ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin: 0.75rem 0;
+  }
+  .markdown-content ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin: 0.75rem 0;
+  }
+  .markdown-content li {
+    margin-bottom: 0.35rem;
+  }
+  .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    color: #000615;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  .markdown-content h1 { font-size: 1.5rem; }
+  .markdown-content h2 { font-size: 1.3rem; }
+  .markdown-content h3 { font-size: 1.15rem; }
+  .markdown-content blockquote {
+    border-left: 4px solid #b51a1e;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: #44474d;
+    font-style: italic;
+    background: #f2f4f6;
+    padding: 0.75rem 1rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .markdown-content code {
+    background-color: #edeef0;
+    color: #b51a1e;
+    padding: 0.15rem 0.35rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
+  .markdown-content pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+  }
+  .markdown-content pre {
+    background-color: #0b1f3a;
+    color: #f8f9fb;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+  .mermaid {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0;
+    background: #ffffff;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid #c4c6ce;
+    box-shadow: 0 2px 8px rgba(11, 31, 58, 0.05);
+  }
 </style>
 </head>
 
@@ -149,7 +253,6 @@
       <div class="flex flex-col">
         <div class="flex items-center gap-1.5">
           <span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Kanoon Saathi</span>
-          <span class="font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed px-1.5 py-0.5 rounded">AI 2.0</span>
         </div>
         <span class="font-nepali text-secondary font-bold text-sm tracking-wide -mt-1">कानून साथी</span>
       </div>
@@ -414,6 +517,30 @@
   </div>
 </div>
 
+<!-- Legal Disclaimer Warning Modal -->
+<div id="legal-warning-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/65 backdrop-blur-sm p-4 animate-fade-in-up">
+  <div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-6 md:p-8 max-w-lg w-full shadow-2xl relative">
+    <div class="w-14 h-14 rounded-full bg-error-container text-on-error-container flex items-center justify-center mb-4">
+      <span class="material-symbols-outlined text-3xl">warning</span>
+    </div>
+    <h3 class="font-headline-md text-headline-md font-bold text-primary mb-2">Legal Advice Disclaimer</h3>
+    <p class="font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed">
+      Kanoon Saathi is an AI legal assistant designed for general informational purposes regarding Nepal Labour Law.
+    </p>
+    <div class="p-4 rounded-xl bg-surface border border-outline-variant border-l-4 border-l-secondary mb-6">
+      <p class="font-body-md text-body-md text-on-surface leading-normal font-medium">
+        <strong class="text-secondary font-bold">Important Notice:</strong> AI responses may not be fully reliable or error-free and <strong class="underline decoration-secondary">do not constitute professional legal advice</strong>. Users are strongly advised to <strong class="text-primary font-semibold">consult a licensed lawyer or advocate</strong> for professional legal counsel.
+      </p>
+    </div>
+    <div class="flex justify-end">
+      <button id="close-warning-btn" type="button" class="w-full sm:w-auto bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label-md text-label-md font-semibold hover:bg-primary-container transition-colors shadow-md flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-base">check</span> I Understand & Agree
+      </button>
+    </div>
+  </div>
+</div>
+
+
 <script>
   const API_BASE = "http://localhost:8000";
   const ADMIN_PASSWORD = "admin123";
@@ -456,26 +583,170 @@
     return new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
   }
 
-  // Very light markdown: bullet lists (- / *) and **bold**
-  function renderAnswer(text) {
-    const safe = esc(text).replace(/\*\*(.+?)\*\*/g, '<strong class="text-primary font-semibold">$1</strong>');
-    const lines = safe.split(/\r?\n/);
-    let html = "";
-    let inList = false;
-    const closeList = () => { if (inList) { html += "</ul>"; inList = false; } };
-    for (const raw of lines) {
-      const line = raw.trim();
-      if (!line) { closeList(); continue; }
-      if (/^[-*]\s+/.test(line)) {
-        if (!inList) { html += '<ul class="list-disc pl-5 space-y-1.5 my-2">'; inList = true; }
-        html += "<li>" + line.replace(/^[-*]\s+/, "") + "</li>";
-      } else {
-        closeList();
-        html += '<p class="mb-2 leading-relaxed">' + line + "</p>";
+  // Mermaid initialization
+  if (window.mermaid) {
+    try {
+      mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
+    } catch (e) { console.warn("Mermaid init error:", e); }
+  }
+
+  function renderMermaidDiagrams(container) {
+    if (window.mermaid) {
+      try {
+        const nodes = (container || document).querySelectorAll('.mermaid');
+        if (nodes.length > 0) {
+          if (typeof mermaid.run === 'function') {
+            mermaid.run({ nodes: Array.from(nodes) });
+          } else if (typeof mermaid.init === 'function') {
+            mermaid.init(undefined, nodes);
+          }
+        }
+      } catch (e) {
+        console.warn("Mermaid rendering error:", e);
       }
     }
-    closeList();
-    return html;
+  }
+
+  // Markdown & Table Parser
+  function renderAnswer(text) {
+    if (!text) return "";
+
+    // If marked.js library is loaded
+    if (window.marked && typeof marked.parse === 'function') {
+      try {
+        let html = marked.parse(text);
+        // Convert code blocks with language-mermaid into <div class="mermaid">
+        html = html.replace(/<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/gi, function(match, code) {
+          const decoded = code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+          return `<div class="mermaid">${decoded.trim()}</div>`;
+        });
+        return `<div class="markdown-content">${html}</div>`;
+      } catch (e) {
+        console.warn("Marked parse failed, using fallback:", e);
+      }
+    }
+
+    // Custom fallback Markdown Table & Text Parser
+    const lines = text.split(/\r?\n/);
+    let out = [];
+    let inTable = false;
+    let tableHeader = [];
+    let tableRows = [];
+    let inList = false;
+    let inCode = false;
+    let codeBuffer = [];
+    let isMermaid = false;
+
+    const flushTable = () => {
+      if (!inTable) return;
+      let ths = tableHeader.map(h => `<th class="py-2.5 px-4 bg-primary text-white font-semibold text-left border-b-2 border-secondary">${h}</th>`).join('');
+      let trs = tableRows.map((row, idx) => {
+        let tds = row.map(c => `<td class="py-2.5 px-4 border-b border-outline-variant text-on-surface">${c}</td>`).join('');
+        let bgClass = idx % 2 === 1 ? 'bg-surface-container-low/40' : 'bg-surface';
+        return `<tr class="${bgClass} hover:bg-surface-container-high/50 transition-colors">${tds}</tr>`;
+      }).join('');
+
+      out.push(`<div class="overflow-x-auto my-4 rounded-xl border border-outline-variant shadow-sm"><table class="w-full text-left border-collapse font-body-md"><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table></div>`);
+      inTable = false;
+      tableHeader = [];
+      tableRows = [];
+    };
+
+    const flushList = () => {
+      if (inList) { out.push('</ul>'); inList = false; }
+    };
+
+    for (let i = 0; i < lines.length; i++) {
+      let rawLine = lines[i];
+      let line = rawLine.trim();
+
+      // Code Block check
+      if (line.startsWith('```')) {
+        if (inCode) {
+          if (isMermaid) {
+            out.push(`<div class="mermaid">${esc(codeBuffer.join('\n'))}</div>`);
+          } else {
+            out.push(`<pre class="bg-primary-container text-on-primary p-4 rounded-xl overflow-x-auto my-3 text-sm"><code>${esc(codeBuffer.join('\n'))}</code></pre>`);
+          }
+          inCode = false;
+          codeBuffer = [];
+          isMermaid = false;
+        } else {
+          flushTable();
+          flushList();
+          inCode = true;
+          isMermaid = line.includes('mermaid');
+          codeBuffer = [];
+        }
+        continue;
+      }
+
+      if (inCode) {
+        codeBuffer.push(rawLine);
+        continue;
+      }
+
+      // Markdown Table check: line contains pipe '|' and at least 2 cells
+      if (line.includes('|') && line.split('|').length >= 3) {
+        flushList();
+        // Skip separator row like |---|---|
+        if (/^\|?\s*:?-+:?\s*(\|?\s*:?-+:?\s*)+\|?$/.test(line)) {
+          continue;
+        }
+        let cells = line.split('|').map(c => c.trim());
+        if (cells[0] === '') cells.shift();
+        if (cells[cells.length - 1] === '') cells.pop();
+
+        cells = cells.map(c => esc(c).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>'));
+
+        if (!inTable) {
+          inTable = true;
+          tableHeader = cells;
+          tableRows = [];
+        } else {
+          tableRows.push(cells);
+        }
+        continue;
+      } else {
+        flushTable();
+      }
+
+      if (!line) {
+        flushList();
+        continue;
+      }
+
+      // Bullet List check
+      if (/^[-*]\s+/.test(line)) {
+        if (!inTable && !inList) {
+          out.push('<ul class="list-disc pl-6 space-y-1.5 my-2 text-on-surface">');
+          inList = true;
+        }
+        let content = esc(line.replace(/^[-*]\s+/, "")).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        out.push(`<li>${content}</li>`);
+        continue;
+      } else {
+        flushList();
+      }
+
+      // Header checks
+      if (line.startsWith('### ')) {
+        out.push(`<h3 class="font-headline-md text-headline-md font-bold text-primary mt-4 mb-2">${esc(line.replace(/^###\s+/, ''))}</h3>`);
+        continue;
+      }
+      if (line.startsWith('## ')) {
+        out.push(`<h2 class="font-headline-lg text-headline-lg font-bold text-primary mt-4 mb-2">${esc(line.replace(/^##\s+/, ''))}</h2>`);
+        continue;
+      }
+
+      // Paragraph
+      let safeLine = esc(line).replace(/\*\*(.+?)\*\*/g, '<strong class="text-primary font-semibold">$1</strong>');
+      out.push(`<p class="mb-2.5 leading-relaxed text-on-surface">${safeLine}</p>`);
+    }
+
+    flushTable();
+    flushList();
+    return `<div class="markdown-content">${out.join('')}</div>`;
   }
 
   function citationCard(src, i) {
@@ -620,6 +891,7 @@
       if (!res.ok) throw new Error("HTTP " + res.status);
       const data = await res.json();
       loader.outerHTML = buildAnswerCard(data.answer || "No answer returned.", data.citations || []);
+      renderMermaidDiagrams(thread);
     } catch (err) {
       loader.outerHTML = `
         <div class="flex items-start gap-3.5 pr-0 md:pr-12">
@@ -670,11 +942,16 @@
   let authed = false;
   const isAdminAuthed = () => authed;
 
-  // In-memory document store (seed matches the reference dashboard)
-  const documents = [
-    { name: "Nepal Labour Act, 2074", category: "Employment Law", status: "Processed", uploaded: "2 hrs ago" },
-    { name: "Social Security Act, 2074", category: "Welfare Law", status: "Processed", uploaded: "1 day ago" }
-  ];
+  let documents = [];
+
+  function formatAgo(mtimeSec) {
+    if (!mtimeSec) return "Recently";
+    const diffSec = Math.floor(Date.now() / 1000 - mtimeSec);
+    if (diffSec < 60) return "Just now";
+    if (diffSec < 3600) return `${Math.floor(diffSec / 60)} mins ago`;
+    if (diffSec < 86400) return `${Math.floor(diffSec / 3600)} hrs ago`;
+    return `${Math.floor(diffSec / 86400)} days ago`;
+  }
 
   function categoryBadge(cat) {
     return `<span class="inline-flex items-center px-2 py-1 rounded-md bg-primary-fixed-dim text-primary-container font-label-sm text-label-sm">${esc(cat)}</span>`;
@@ -688,42 +965,73 @@
   }
 
   function docRow(doc, idx) {
+    const filename = doc.filename || doc.name || "Legal Document";
+    const uploadedTime = doc.uploaded || formatAgo(doc.mtime);
+    const category = doc.category || "Legal Document";
+    const status = doc.status || "Processed";
+
     return `
       <tr class="hover:bg-surface-container-low/30 transition-colors group">
         <td class="py-4 px-md">
           <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-primary-container">article</span>
             <div>
-              <p class="font-body-md text-body-md text-on-background font-medium">${esc(doc.name)}</p>
-              <p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Uploaded ${esc(doc.uploaded)}</p>
+              <p class="font-body-md text-body-md text-on-background font-medium">${esc(filename)}</p>
+              <p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Uploaded ${esc(uploadedTime)}</p>
             </div>
           </div>
         </td>
-        <td class="py-4 px-md">${categoryBadge(doc.category)}</td>
-        <td class="py-4 px-md">${statusCell(doc.status)}</td>
+        <td class="py-4 px-md">${categoryBadge(category)}</td>
+        <td class="py-4 px-md">${statusCell(status)}</td>
         <td class="py-4 px-md text-right">
           <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-lg hover:bg-surface-container" title="View"><span class="material-symbols-outlined text-[20px]">visibility</span></button>
             <button class="doc-delete p-2 text-on-surface-variant hover:text-secondary transition-colors rounded-lg hover:bg-error-container" title="Delete" data-idx="${idx}"><span class="material-symbols-outlined text-[20px]">delete</span></button>
           </div>
         </td>
       </tr>`;
   }
 
-  function refreshDocs() {
+  async function refreshDocs() {
+    try {
+      const res = await fetch(`${API_BASE}/documents`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && Array.isArray(data.documents)) {
+          documents = data.documents;
+        }
+      }
+    } catch (err) {
+      console.warn("Could not fetch documents list from API:", err);
+    }
+
     const rows = documents.map((d, i) => docRow(d, i)).join("");
-    $("#docs-table-body").innerHTML = rows || `<tr><td colspan="4" class="py-8 px-md text-center text-on-surface-variant font-body-md">No documents yet.</td></tr>`;
-    $("#docs-table-body-all").innerHTML = rows || `<tr><td colspan="4" class="py-8 px-md text-center text-on-surface-variant font-body-md">No documents yet.</td></tr>`;
+    $("#docs-table-body").innerHTML = rows || `<tr><td colspan="4" class="py-8 px-md text-center text-on-surface-variant font-body-md">No documents uploaded yet.</td></tr>`;
+    $("#docs-table-body-all").innerHTML = rows || `<tr><td colspan="4" class="py-8 px-md text-center text-on-surface-variant font-body-md">No documents uploaded yet.</td></tr>`;
     $("#stat-total").textContent = documents.length;
-    $("#stat-chunks").textContent = (documents.length * 120 + 10).toLocaleString();
+    $("#stat-chunks").textContent = (documents.length * 120).toLocaleString();
   }
 
-  document.addEventListener("click", (e) => {
+  document.addEventListener("click", async (e) => {
     const del = e.target.closest(".doc-delete");
     if (!del) return;
-    documents.splice(Number(del.getAttribute("data-idx")), 1);
-    refreshDocs();
-    toast("Document removed");
+    const idx = Number(del.getAttribute("data-idx"));
+    const doc = documents[idx];
+    if (!doc) return;
+    
+    const fname = doc.filename || doc.name;
+    if (confirm(`Are you sure you want to delete "${fname}"?`)) {
+      try {
+        const res = await fetch(`${API_BASE}/documents/${encodeURIComponent(fname)}`, { method: "DELETE" });
+        if (res.ok) {
+          toast("Document deleted");
+        } else {
+          toast("Failed to delete document", false);
+        }
+      } catch (err) {
+        toast("Server error deleting document", false);
+      }
+      await refreshDocs();
+    }
   });
 
   // Admin login
@@ -844,6 +1152,15 @@
     pct.classList.add("text-error");
     stat.innerHTML = '<span class="material-symbols-outlined text-[14px] text-error">error</span> ' + esc(msg);
     toast("Upload failed", false);
+  }
+
+  // Warning modal listener
+  const closeWarningBtn = $("#close-warning-btn");
+  const legalWarningModal = $("#legal-warning-modal");
+  if (closeWarningBtn && legalWarningModal) {
+    closeWarningBtn.addEventListener("click", () => {
+      legalWarningModal.classList.add("hidden-view");
+    });
   }
 
   // init

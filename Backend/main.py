@@ -7,10 +7,10 @@ from fastapi import FastAPI, UploadFile, File, Request, Query
 from fastapi.middleware.cors import CORSMiddleware
 from ingestion import process_pdf
 from embeddings import embedding
-from retrieval import store_chunks, search
+from retrieval import store_chunks, search, delete_document_chunks
 from llm import generate_answer
 
-app = FastAPI(title="Kanoon Saathi API", version="2.0")
+app = FastAPI(title="Kanoon Saathi API", version="1.0")
 
 # Enable CORS for Frontend communication
 app.add_middleware(
@@ -32,6 +32,37 @@ async def upload_pdf(file: UploadFile = File(...)):
     embeddings = embedding(processed_chunks)
     store_chunks(processed_chunks, embeddings, file_path)
     return {"message": f"Successfully processed {file.filename}", "chunks": len(processed_chunks)}
+
+@app.get("/documents")
+async def list_documents():
+    data_dir = "data"
+    docs = []
+    if os.path.exists(data_dir):
+        for fname in os.listdir(data_dir):
+            fpath = os.path.join(data_dir, fname)
+            if os.path.isfile(fpath):
+                stat = os.stat(fpath)
+                docs.append({
+                    "name": fname,
+                    "filename": fname,
+                    "category": "Legal Document",
+                    "status": "Processed",
+                    "size": stat.st_size,
+                    "mtime": stat.st_mtime
+                })
+    # Sort documents by modification time descending (latest first)
+    docs.sort(key=lambda d: d["mtime"], reverse=True)
+    return {"documents": docs}
+
+@app.delete("/documents/{filename}")
+async def delete_document(filename: str):
+    fpath = os.path.join("data", filename)
+    file_deleted = False
+    if os.path.exists(fpath):
+        os.remove(fpath)
+        file_deleted = True
+    chunks_deleted = delete_document_chunks(filename)
+    return {"message": f"Deleted {filename}", "file_deleted": file_deleted, "chunks_deleted": chunks_deleted}
 
 @app.post("/ask")
 async def ask_question(request: Request, question: Optional[str] = Query(None)):
@@ -56,13 +87,29 @@ async def ask_question(request: Request, question: Optional[str] = Query(None)):
     if not documents:
         return {"answer": "No documents uploaded yet. Please upload a PDF first.", "citations": []}
         
-    context_chunks = [
-        f"[Source: {meta.get('source', 'Unknown')}]\n{doc}" 
-        for doc, meta in zip(documents, metadatas)
-    ]
-    answer = generate_answer(q, context_chunks)
-    return {"answer": answer, "citations": metadatas}
+    context_items = []
+    for doc, meta in zip(documents, metadatas):
+        src = meta.get("source", "Unknown")
+        fn = meta.get("filename") or os.path.basename(src)
+        context_items.append({"doc": doc, "source": src, "filename": fn, "metadata": meta})
+        
+    answer, cited_filenames = generate_answer(q, context_items)
+
+    # Return metadata for ONLY the specific source document(s) actually cited
+    matched_metadatas = []
+    seen = set()
+    for c_fn in cited_filenames:
+        for meta in metadatas:
+            src = meta.get("source", "")
+            m_fn = meta.get("filename") or os.path.basename(src)
+            if (c_fn.lower() == m_fn.lower() or c_fn.lower() in m_fn.lower() or m_fn.lower() in c_fn.lower()) and m_fn not in seen:
+                seen.add(m_fn)
+                matched_metadatas.append(meta)
+                break
+
+    return {"answer": answer, "citations": matched_metadatas}
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
